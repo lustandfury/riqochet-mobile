@@ -12,9 +12,34 @@ View your app in AI Studio: https://ai.studio/apps/drive/1OFXW8se6zMy4T8jXQtjASM
 
 **Prerequisites:**  Node.js
 
-
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+
+2. Set up Gemini API (Required for AI image generation):
+   
+   **Option A: Get API Key**
+   - Visit [Google AI Studio](https://aistudio.google.com)
+   - Click "Get API Key" → "Create API Key"
+   - Copy your key (starts with `AIza...`)
+   
+   **Option B: Set API Key**
+   - Create `.env.local` file: `GEMINI_API_KEY=your_api_key_here`
+   - Or set environment variable: `export GEMINI_API_KEY=your_api_key_here`
+
 3. Run the app:
    `npm run dev`
+
+4. Test API setup:
+   `node test-api.js`
+
+## Deploy to Netlify
+
+1. **Set up API key in production:**
+   - Go to [Netlify Dashboard](https://app.netlify.com)
+   - Site settings → Build & deploy → Environment
+   - Add `GEMINI_API_KEY` with your API key
+
+2. **Deploy:**
+   `./deploy.sh` or `npm run deploy`
+
+📖 **For detailed setup:** See [SETUP.md](./SETUP.md)

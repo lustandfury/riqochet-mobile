@@ -3,12 +3,13 @@ export enum AppView {
   DASHBOARD = 'DASHBOARD',
   SHARE_PREVIEW = 'SHARE_PREVIEW',
   JOIN = 'JOIN',
+  TOURNAMENT_LANDING = 'TOURNAMENT_LANDING',
 }
 
 export interface Player {
   id: string;
   nickname: string;
-  avatarUrl?: string; // We'll mock this or use an uploaded base64
+  avatarUrl?: string; // Base64 or URL
   joinedAt: number;
 }
 
@@ -32,4 +33,5 @@ export interface GeneratePosterParams {
   location: string;
   mood: string;
   playerCount: number;
+  profilePictures?: string[]; // Array of base64 image data
 }

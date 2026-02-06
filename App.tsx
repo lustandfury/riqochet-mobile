@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { generatePoster } from './services/geminiService';
+import { generateShareLink } from './services/shareService';
 import { Button } from './components/Button';
 import { PosterCard } from './components/PosterCard';
 import { ChatPreview } from './components/ChatPreview';
+import { ProfilePictureUpload } from './components/ProfilePictureUpload';
+import { TournamentLanding } from './components/TournamentLanding';
 import { AppView, Tournament, Player } from './types';
 
 // Icons
@@ -13,6 +16,7 @@ const SparklesIcon = () => <svg className="w-5 h-5" fill="none" viewBox="0 0 24 
 function App() {
   const [view, setView] = useState<AppView>(AppView.CREATE);
   const [loading, setLoading] = useState(false);
+  const [profilePictures, setProfilePictures] = useState<string[]>([]);
   const [tournament, setTournament] = useState<Tournament>({
     id: '',
     name: '',
@@ -24,6 +28,42 @@ function App() {
     ownerId: 'owner-1',
     players: [],
   });
+
+  // Handle URL routing for join links
+  useEffect(() => {
+    const handleJoinRouting = () => {
+      const path = window.location.pathname;
+      
+      // Check if this is a join link
+      if (path.startsWith('/join/')) {
+        // Extract tournament ID from URL
+        const shareId = path.replace('/join/', '');
+        
+        // For demo purposes, create a mock tournament
+        const mockTournament: Tournament = {
+          id: shareId,
+          name: 'Summer Slam 2024',
+          sport: 'Basketball',
+          location: 'Central Park Courts',
+          date: 'Saturday, 2 PM',
+          maxPlayers: 10,
+          mood: 'Urban Grit',
+          ownerId: 'owner-1',
+          players: [
+            { id: 'owner-1', nickname: 'Host', joinedAt: Date.now() },
+            { id: 'player-1', nickname: 'Alex', joinedAt: Date.now() - 100000 },
+            { id: 'player-2', nickname: 'Sarah', joinedAt: Date.now() - 200000 }
+          ],
+          posterUrl: 'https://picsum.photos/seed/basketball/800/1200'
+        };
+        
+        setTournament(mockTournament);
+        setView(AppView.TOURNAMENT_LANDING);
+      }
+    };
+
+    handleJoinRouting();
+  }, []);
 
   // Handle Input Changes for creation
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -46,7 +86,8 @@ function App() {
         sport: updatedTournament.sport,
         location: updatedTournament.location,
         mood: updatedTournament.mood,
-        playerCount: 1
+        playerCount: 1,
+        profilePictures: profilePictures
       });
       
       setTournament({ ...updatedTournament, posterUrl });
@@ -77,7 +118,8 @@ function App() {
         sport: updatedTournament.sport,
         location: updatedTournament.location,
         mood: updatedTournament.mood,
-        playerCount: updatedPlayers.length
+        playerCount: updatedPlayers.length,
+        profilePictures: profilePictures
       });
       setTournament(prev => ({ ...prev, posterUrl }));
     } catch (err) {
@@ -90,33 +132,39 @@ function App() {
   // --- VIEWS ---
 
   const renderCreateView = () => (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-riq-900">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       <div className="w-full max-w-lg space-y-8 animate-fade-in">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-riq-400 to-riq-accent">
+          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
             RIQOCHET
           </h1>
-          <p className="mt-2 text-gray-400">Initialize Tournament & Generate Artifacts</p>
+          <p className="mt-2 text-dark-400">Initialize Tournament & Generate Artifacts</p>
         </div>
 
-        <form onSubmit={handleCreate} className="bg-riq-800 p-8 rounded-2xl shadow-xl border border-riq-700 space-y-6">
+        <form onSubmit={handleCreate} className="bg-surface p-8 rounded-2xl shadow-xl border border-dark-800 space-y-6">
           <div className="space-y-4">
+            <ProfilePictureUpload 
+              onPicturesChange={setProfilePictures}
+              maxPictures={2}
+              existingPictures={profilePictures}
+            />
+            
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Tournament Name</label>
+              <label className="block text-sm font-medium text-dark-400 mb-1">Tournament Name</label>
               <input 
                 required
                 name="name" 
                 value={tournament.name} 
                 onChange={handleInputChange}
-                className="w-full bg-riq-900 border border-riq-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-riq-500 outline-none" 
+                className="w-full bg-card border border-dark-800 rounded-lg p-3 text-white focus:ring-2 focus:ring-primary outline-none" 
                 placeholder="e.g. Summer Slam 24"
               />
             </div>
             
             <div className="grid grid-cols-2 gap-4">
                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1">Sport</label>
-                  <select name="sport" value={tournament.sport} onChange={handleInputChange} className="w-full bg-riq-900 border border-riq-700 rounded-lg p-3 text-white">
+                  <label className="block text-sm font-medium text-dark-400 mb-1">Sport</label>
+                  <select name="sport" value={tournament.sport} onChange={handleInputChange} className="w-full bg-card border border-dark-800 rounded-lg p-3 text-white">
                     <option>Basketball</option>
                     <option>Soccer</option>
                     <option>Tennis</option>
@@ -125,8 +173,8 @@ function App() {
                   </select>
                </div>
                <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1">Mood</label>
-                  <select name="mood" value={tournament.mood} onChange={handleInputChange} className="w-full bg-riq-900 border border-riq-700 rounded-lg p-3 text-white">
+                  <label className="block text-sm font-medium text-dark-400 mb-1">Mood</label>
+                  <select name="mood" value={tournament.mood} onChange={handleInputChange} className="w-full bg-card border border-dark-800 rounded-lg p-3 text-white">
                     <option>Urban Grit</option>
                     <option>Neon Future</option>
                     <option>Classic Prestige</option>
@@ -136,12 +184,12 @@ function App() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Location</label>
+              <label className="block text-sm font-medium text-dark-400 mb-1">Location</label>
               <input 
                 name="location" 
                 value={tournament.location} 
                 onChange={handleInputChange}
-                className="w-full bg-riq-900 border border-riq-700 rounded-lg p-3 text-white" 
+                className="w-full bg-card border border-dark-800 rounded-lg p-3 text-white" 
               />
             </div>
           </div>
@@ -151,9 +199,9 @@ function App() {
             Create & Generate Poster
           </Button>
           
-          {!process.env.API_KEY && (
+          {!process.env.GEMINI_API_KEY && (
              <p className="text-xs text-yellow-500/80 text-center">
-               Note: No API_KEY found. Using mock image generator.
+               Note: No GEMINI_API_KEY found. Using mock image generator.
              </p>
           )}
         </form>
@@ -162,14 +210,14 @@ function App() {
   );
 
   const renderDashboardView = () => (
-    <div className="min-h-screen bg-riq-900 p-4 pb-24">
+    <div className="min-h-screen bg-background p-4 pb-24">
       <header className="flex justify-between items-center mb-6">
-        <button onClick={() => setView(AppView.CREATE)} className="text-gray-400 hover:text-white">
+        <button onClick={() => setView(AppView.CREATE)} className="text-dark-400 hover:text-white">
           <ArrowLeftIcon />
         </button>
         <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            <span className="text-sm font-medium text-gray-300">Live</span>
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            <span className="text-sm font-medium text-dark-300">Live</span>
         </div>
       </header>
 
@@ -178,26 +226,26 @@ function App() {
         {/* The Artifact */}
         <div className="w-full max-w-sm relative">
             <PosterCard tournament={tournament} loading={loading} />
-            <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-riq-800 px-4 py-1 rounded-full border border-riq-700 text-xs text-riq-400 shadow-lg whitespace-nowrap">
+            <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-surface px-4 py-1 rounded-full border border-dark-800 text-xs text-primary shadow-lg whitespace-nowrap">
                AI Artifact v{tournament.players.length}.0
             </div>
         </div>
 
         {/* Action Area */}
         <div className="w-full max-w-sm space-y-4">
-           <div className="bg-riq-800/50 p-4 rounded-xl border border-riq-700/50">
+           <div className="bg-surface/50 p-4 rounded-xl border border-dark-800/50">
               <div className="flex justify-between items-center mb-2">
-                 <h3 className="text-sm font-bold text-gray-300">Roster ({tournament.players.length}/{tournament.maxPlayers})</h3>
-                 <span className="text-xs text-riq-400">Filling up...</span>
+                 <h3 className="text-sm font-bold text-dark-300">Roster ({tournament.players.length}/{tournament.maxPlayers})</h3>
+                 <span className="text-xs text-primary">Filling up...</span>
               </div>
               <div className="flex -space-x-2 overflow-hidden">
                  {tournament.players.map((p, i) => (
-                    <div key={p.id} className="w-8 h-8 rounded-full bg-riq-700 border-2 border-riq-800 flex items-center justify-center text-xs font-bold text-white relative" style={{zIndex: 10-i}}>
+                    <div key={p.id} className="w-8 h-8 rounded-full bg-dark-700 border-2 border-surface flex items-center justify-center text-xs font-bold text-white relative" style={{zIndex: 10-i}}>
                        {p.nickname.charAt(0)}
                     </div>
                  ))}
                  {Array.from({length: Math.min(3, tournament.maxPlayers - tournament.players.length)}).map((_, i) => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-riq-800/50 border-2 border-riq-800 border-dashed"></div>
+                    <div key={i} className="w-8 h-8 rounded-full bg-dark-800/50 border-2 border-dark-800 border-dashed"></div>
                  ))}
               </div>
            </div>
@@ -210,21 +258,45 @@ function App() {
     </div>
   );
 
-  const renderSharePreview = () => (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md mb-6 flex justify-between items-center">
-         <button onClick={() => setView(AppView.DASHBOARD)} className="text-gray-600 font-medium flex items-center gap-1">
+  const renderSharePreview = () => {
+    const shareLink = generateShareLink(tournament);
+    
+    return (
+      <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+        <div className="w-full max-w-md mb-6 flex justify-between items-center">
+           <button onClick={() => setView(AppView.DASHBOARD)} className="text-gray-600 font-medium flex items-center gap-1">
            <ArrowLeftIcon /> Back
-         </button>
-         <h2 className="text-gray-800 font-bold">Preview</h2>
+           </button>
+           <h2 className="text-gray-800 font-bold">Preview</h2>
+        </div>
+        
+        <ChatPreview tournament={tournament} onLinkClick={() => window.open(shareLink, '_blank')} />
+        
+        <div className="mt-8 text-center">
+          <p className="text-sm text-gray-500 max-w-xs">
+            Share this link on WhatsApp, iMessage, or social media:
+          </p>
+          <div className="mt-4 bg-white p-4 rounded-lg border border-gray-200">
+            <code className="text-primary text-xs break-all">
+              {shareLink}
+            </code>
+          </div>
+          <Button 
+            onClick={() => window.open(shareLink, '_blank')} 
+            className="w-full mt-4"
+          >
+            Open Tournament Page
+          </Button>
+        </div>
       </div>
-      
-      <ChatPreview tournament={tournament} onLinkClick={() => setView(AppView.JOIN)} />
-      
-      <div className="mt-8 text-center text-sm text-gray-500 max-w-xs">
-        <p>This is how your link appears in WhatsApp/iMessage. The image is dynamically pulled from your AI poster.</p>
-      </div>
-    </div>
+    );
+  };
+
+  const renderTournamentLanding = () => (
+    <TournamentLanding 
+      tournament={tournament} 
+      onJoin={() => setView(AppView.JOIN)} 
+    />
   );
 
   const renderJoinView = () => {
@@ -278,6 +350,7 @@ function App() {
       {view === AppView.DASHBOARD && renderDashboardView()}
       {view === AppView.SHARE_PREVIEW && renderSharePreview()}
       {view === AppView.JOIN && renderJoinView()}
+      {view === AppView.TOURNAMENT_LANDING && renderTournamentLanding()}
     </>
   );
 }
