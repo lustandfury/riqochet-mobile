@@ -1,6 +1,7 @@
 [build]
   publish = "dist"
   command = "npm run build"
+  environment = { GEMINI_API_KEY = "" }
 
 [build.environment]
   NODE_VERSION = "18"

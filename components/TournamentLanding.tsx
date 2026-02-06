@@ -17,7 +17,7 @@ export const TournamentLanding: React.FC<TournamentLandingProps> = ({ tournament
       `<meta property="og:description" content="🏆 ${tournament.sport} Tournament at ${tournament.location}. ${tournament.maxPlayers - tournament.players.length} spots left! Join now to get on the poster." />`,
       `<meta property="og:image" content="${tournament.posterUrl || 'https://picsum.photos/seed/tournament/800/1200'}" />`,
       `<meta property="og:image:alt" content="${tournament.name} Tournament Poster" />`,
-      `<meta property="og:url" content="${window.location.href}" />`,
+      `<meta property="og:url" content="${typeof window !== 'undefined' ? window.location.href : ''}" />`,
       `<meta property="og:type" content="website" />`,
       `<meta property="og:site_name" content="Riqochet" />`,
       `<meta name="twitter:card" content="summary_large_image" />`,
@@ -38,11 +38,15 @@ export const TournamentLanding: React.FC<TournamentLandingProps> = ({ tournament
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = tagHtml;
       const metaTag = tempDiv.firstChild as HTMLMetaElement;
-      head.appendChild(metaTag);
+      if (metaTag) {
+        head.appendChild(metaTag);
+      }
     });
 
     // Update page title
-    document.title = `${tournament.name} - ${tournament.sport} Tournament | Riqochet`;
+    if (typeof document !== 'undefined') {
+      document.title = `${tournament.name} - ${tournament.sport} Tournament | Riqochet`;
+    }
 
     setMetadata(tags.join('\n'));
   }, [tournament]);
@@ -56,6 +60,11 @@ export const TournamentLanding: React.FC<TournamentLandingProps> = ({ tournament
             src={tournament.posterUrl} 
             alt={`${tournament.name} Tournament Poster`}
             className="w-full h-full object-cover"
+            onError={(e) => {
+              // Fallback to gradient if image fails to load
+              e.target.style.display = 'none';
+              e.target.parentElement?.classList.add('bg-gradient-to-br', 'from-primary/20', 'to-accent/20', 'flex', 'items-center', 'justify-center');
+            }}
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">

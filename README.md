@@ -34,12 +34,46 @@ View your app in AI Studio: https://ai.studio/apps/drive/1OFXW8se6zMy4T8jXQtjASM
 
 ## Deploy to Netlify
 
-1. **Set up API key in production:**
-   - Go to [Netlify Dashboard](https://app.netlify.com)
-   - Site settings → Build & deploy → Environment
-   - Add `GEMINI_API_KEY` with your API key
+### Option 1: GitHub Actions (Recommended)
+**Automatic deployments on every push to main branch**
 
-2. **Deploy:**
-   `./deploy.sh` or `npm run deploy`
+1. **Set up Secrets** (one-time setup):
+   ```bash
+   # Add Netlify credentials
+   gh secret set NETLIFY_SITE_ID "your_site_id"
+   gh secret set NETLIFY_AUTH_TOKEN "your_auth_token"
+   # Optional: Add Gemini API key
+   gh secret set GEMINI_API_KEY "your_gemini_key"
+   ```
+
+2. **Push to trigger deployment**:
+   ```bash
+   git add .
+   git commit -m "Add GitHub Actions deployment"
+   git push origin main
+   ```
+
+3. **Monitor deployment**:
+   - GitHub Actions tab for build status
+   - Netlify dashboard for live site
+
+📖 **For detailed setup**: See [GITHUB_DEPLOYMENT.md](./GITHUB_DEPLOYMENT.md)
+
+### Option 2: Manual Deploy
+```bash
+npm run deploy
+```
+
+### Option 3: Step by Step
+1. Login to Netlify (first time only)
+   `netlify login`
+
+2. Set up API key in production:
+   - Go to [Netlify Dashboard](https://app.netlify.com/projects/riqochet)
+   - Site settings → Build & deploy → Environment
+   - Add variable: `GEMINI_API_KEY` = your actual API key
+
+3. Deploy:
+   `npm run deploy`
 
 📖 **For detailed setup:** See [SETUP.md](./SETUP.md)
