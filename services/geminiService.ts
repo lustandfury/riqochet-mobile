@@ -33,7 +33,7 @@ export const generatePoster = async (params: GeneratePosterParams): Promise<stri
         ]
       },
       config: {
-        // While the documentation says "imageConfig" for some models, 
+        // While the documentation says "imageConfig" for some models,
         // gemini-2.5-flash-image often infers image generation from prompt or specific tool usage.
         // We will try the standard generateContent which returns an image part for this specific model family
         // as per the provided "Generate Images" guidance for nano banana.
