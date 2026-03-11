@@ -229,13 +229,8 @@ function AppContent() {
 export default function App() {
   return (
     <AppProvider>
-      <div className="flex justify-center bg-app" style={{ height: '100svh' }}>
-        <div
-          className="relative w-full bg-app overflow-hidden"
-          style={{ maxWidth: 480, height: '100%' }}
-        >
-          <AppContent />
-        </div>
+      <div className="relative w-full bg-app overflow-hidden" style={{ flex: 1 }}>
+        <AppContent />
       </div>
     </AppProvider>
   );
