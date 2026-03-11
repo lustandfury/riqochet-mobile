@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0df259",
+              "background-light": "#f5f8f6",
+              "background-dark": "#102216",
+              "neutral-dark": "#183422",
+              "border-dark": "#316843",
+            },
+            fontFamily: {
+              "display": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<title>Riqochet - Create Tournament</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-border-dark">
+<div class="max-w-[480px] mx-auto flex items-center p-4 justify-between">
+<button class="text-slate-900 dark:text-slate-100 flex items-center justify-center p-2 hover:bg-slate-200 dark:hover:bg-neutral-dark rounded-full transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-10">Create Tournament</h1>
+</div>
+</header>
+<main class="max-w-[480px] mx-auto pb-24">
+<!-- Progress Bar Section -->
+<div class="flex flex-col gap-3 p-6">
+<div class="flex justify-between items-end">
+<div class="flex flex-col">
+<span class="text-xs font-semibold uppercase tracking-wider text-primary">Configuration</span>
+<p class="text-xl font-bold">Step 1 of 5</p>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">20% Complete</p>
+</div>
+<div class="h-2 w-full rounded-full bg-slate-200 dark:bg-border-dark overflow-hidden">
+<div class="h-full rounded-full bg-primary shadow-[0_0_10px_rgba(13,242,89,0.5)]" style="width: 20%;"></div>
+</div>
+</div>
+<section class="px-6 space-y-8">
+<!-- Header Title -->
+<div>
+<h2 class="text-2xl font-bold leading-tight">Tournament Details</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Set up the core parameters for your Riqochet event.</p>
+</div>
+<!-- Tournament Name -->
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Tournament Name</label>
+<input class="w-full px-4 py-4 rounded-xl border border-slate-200 dark:border-border-dark bg-white dark:bg-neutral-dark focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500" placeholder="e.g. Riqochet Summer Open 2024" type="text"/>
+</div>
+<!-- Start Date Picker (Calendar UI Component) -->
+<div class="space-y-4">
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Start Date</label>
+<div class="rounded-xl border border-slate-200 dark:border-border-dark bg-white dark:bg-neutral-dark p-4 shadow-sm">
+<div class="flex items-center justify-between mb-4 px-2">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-border-dark/30 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<span class="font-bold text-sm uppercase tracking-widest">August 2024</span>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-border-dark/30 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+<div class="grid grid-cols-7 gap-1 text-center">
+<span class="text-[10px] font-bold text-slate-400 pb-2">SUN</span>
+<span class="text-[10px] font-bold text-slate-400 pb-2">MON</span>
+<span class="text-[10px] font-bold text-slate-400 pb-2">TUE</span>
+<span class="text-[10px] font-bold text-slate-400 pb-2">WED</span>
+<span class="text-[10px] font-bold text-slate-400 pb-2">THU</span>
+<span class="text-[10px] font-bold text-slate-400 pb-2">FRI</span>
+<span class="text-[10px] font-bold text-slate-400 pb-2">SAT</span>
+<div class="col-start-5 py-2 text-sm text-slate-400">1</div>
+<div class="py-2 text-sm text-slate-400">2</div>
+<div class="py-2 text-sm text-slate-400">3</div>
+<div class="py-2 text-sm text-slate-900 dark:text-slate-100">4</div>
+<div class="py-2 text-sm bg-primary text-background-dark font-bold rounded-lg shadow-lg">5</div>
+<div class="py-2 text-sm text-slate-900 dark:text-slate-100">6</div>
+<div class="py-2 text-sm text-slate-900 dark:text-slate-100">7</div>
+<div class="py-2 text-sm text-slate-900 dark:text-slate-100">8</div>
+<div class="py-2 text-sm text-slate-900 dark:text-slate-100">9</div>
+<div class="py-2 text-sm text-slate-900 dark:text-slate-100">10</div>
+<div class="py-2 text-sm text-slate-900 dark:text-slate-100">11</div>
+<div class="py-2 text-sm text-slate-900 dark:text-slate-100">12</div>
+<div class="py-2 text-sm text-slate-900 dark:text-slate-100">13</div>
+<div class="py-2 text-sm text-slate-900 dark:text-slate-100">14</div>
+</div>
+</div>
+</div>
+<!-- Scoring Format -->
+<div class="space-y-3">
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Scoring Format</label>
+<div class="grid grid-cols-2 gap-3">
+<label class="relative cursor-pointer">
+<input checked="" class="peer sr-only" name="format" type="radio"/>
+<div class="p-4 border-2 border-slate-200 dark:border-border-dark rounded-xl peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+<div class="flex items-center justify-between mb-1">
+<span class="font-bold">Regular</span>
+<span class="material-symbols-outlined text-primary scale-0 peer-checked:scale-100 transition-transform">check_circle</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400">Standard point calculation for tournament play.</p>
+</div>
+</label>
+<label class="relative cursor-pointer">
+<input class="peer sr-only" name="format" type="radio"/>
+<div class="p-4 border-2 border-slate-200 dark:border-border-dark rounded-xl peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+<div class="flex items-center justify-between mb-1">
+<span class="font-bold">Turbo</span>
+<span class="material-symbols-outlined text-primary scale-0 peer-checked:scale-100 transition-transform">check_circle</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400">Accelerated scoring for fast-paced competitions.</p>
+</div>
+</label>
+</div>
+</div>
+<!-- Group Size -->
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Maximum Group Size</label>
+<div class="flex items-center gap-4 bg-white dark:bg-neutral-dark p-2 rounded-xl border border-slate-200 dark:border-border-dark">
+<button class="size-10 flex items-center justify-center bg-slate-100 dark:bg-border-dark/30 rounded-lg hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<div class="flex-1 text-center font-bold text-lg">4</div>
+<button class="size-10 flex items-center justify-center bg-primary text-background-dark rounded-lg hover:opacity-90 transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+<!-- Toggle for Calcutta Auction -->
+<div class="flex items-center justify-between p-4 bg-primary/10 border border-primary/20 rounded-xl">
+<div class="flex items-center gap-3">
+<div class="size-10 flex items-center justify-center bg-primary text-background-dark rounded-full">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<p class="font-bold text-sm">Enable Calcutta Auction</p>
+<p class="text-xs text-slate-500 dark:text-primary/70">Wager on teams before tournament starts</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-border-dark peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</section>
+</main>
+<!-- Bottom Action Button -->
+<div class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background-light dark:from-background-dark to-transparent pt-10">
+<div class="max-w-[480px] mx-auto">
+<button class="w-full bg-primary text-background-dark font-bold py-4 rounded-xl shadow-[0_8px_20px_rgba(13,242,89,0.3)] hover:translate-y-[-2px] transition-all active:scale-95 flex items-center justify-center gap-2">
+                Continue to Participants
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

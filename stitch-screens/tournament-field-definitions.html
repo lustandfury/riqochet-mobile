@@ -1,0 +1,133 @@
+# Padel Tournament — Data Field Definitions
+
+Backend reference document for tournament engine V1. Fields marked ❓ require product decision before implementation.
+
+---
+
+## Scoring Formats
+
+The `scoring_format` field on Tournament accepts two values: `"regular"` or `"turbo"`.
+
+### Regular
+- One set per match
+- First to 6 games wins the set
+- Tiebreak triggered at 6–6
+- Tiebreak: first to 7 points, must win by 2
+- Golden point at deuce
+
+### Turbo
+- One set per match
+- First to 4 games wins the set
+- Tiebreak triggered at 3–3
+- Tiebreak: first to 7 points, must win by 2
+- Golden point at deuce
+
+> **Note:** Both formats use a single set. The `set_number` field on Set Score will always be `1` in V1.
+
+---
+
+## 1. Tournament
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| tournament_id | UUID | Yes | Auto-generated |
+| name | Text | Yes | Max 100 characters |
+| created_by | user_id | Yes | References the organizer user |
+| created_at | Timestamp | Yes | Auto-generated on creation |
+| start_date | Date | Yes | |
+| registration_deadline | Datetime | ❓ | Is this required or optional? |
+| scoring_format | Enum | Yes | `"regular"` or `"turbo"` — see Scoring Formats above |
+| group_size | Number | Yes | Default = 4 teams per group |
+| max_teams | Number | ❓ | Is there a cap on team registrations? |
+| status | Enum | Yes | `"draft"` \| `"registration"` \| `"in_progress"` \| `"completed"` |
+
+---
+
+## 2. Team
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| team_id | UUID | Yes | Auto-generated |
+| tournament_id | UUID | Yes | Foreign key → Tournament |
+| team_name | Text | Yes | Max 50 characters |
+| player_1_id | user_id | Yes | Team creator |
+| player_2_id | user_id | Yes | Invited partner |
+| registration_status | Enum | Yes | `"pending"` \| `"confirmed"` |
+| seed | Number | ❓ | Doc states no seeding in V1 — confirm exclusion |
+
+---
+
+## 3. Group
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| group_id | UUID | Yes | Auto-generated |
+| tournament_id | UUID | Yes | Foreign key → Tournament |
+| group_name | Text | Yes | Auto-assigned, e.g. `"Group A"`, `"Group B"` |
+| team_ids | List of UUIDs | Yes | Teams assigned to this group |
+
+---
+
+## 4. Match
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| match_id | UUID | Yes | Auto-generated |
+| tournament_id | UUID | Yes | Foreign key → Tournament |
+| group_id | UUID | No | Null if knockout stage match |
+| stage | Enum | Yes | `"group"` \| `"knockout"` |
+| round | Number | Yes | Round number or bracket round (QF=4, SF=2, F=1) |
+| team_1_id | UUID | Yes | Foreign key → Team |
+| team_2_id | UUID | Yes | Foreign key → Team |
+| scheduled_time | Datetime | ❓ | Are match times set by organizer or self-managed? |
+| status | Enum | Yes | `"scheduled"` \| `"in_progress"` \| `"completed"` |
+| winner_id | UUID | No | Null until match is completed |
+
+---
+
+## 5. Set Score (child of Match)
+
+> Both Regular and Turbo formats produce exactly one set per match. `set_number` will always be `1` in V1.
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| set_score_id | UUID | Yes | Auto-generated |
+| match_id | UUID | Yes | Foreign key → Match |
+| set_number | Number | Yes | Always `1` in V1 |
+| team_1_games | Number | Yes | Games won by team 1 in this set |
+| team_2_games | Number | Yes | Games won by team 2 in this set |
+
+---
+
+## 6. Group Standing
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| standing_id | UUID | Yes | Auto-generated |
+| group_id | UUID | Yes | Foreign key → Group |
+| team_id | UUID | Yes | Foreign key → Team |
+| matches_played | Number | Yes | |
+| wins | Number | Yes | |
+| losses | Number | Yes | |
+| sets_won | Number | Yes | Always matches wins in V1 (one set per match) |
+| sets_lost | Number | Yes | Always matches losses in V1 |
+| games_won | Number | Yes | |
+| games_lost | Number | Yes | |
+| rank | Number | Yes | Position within group — tiebreaker logic TBD ❓ |
+
+---
+
+## Open Questions — Needs Product Decision
+
+### ✅ Resolved
+- **Q4: Scoring format rules** — see Scoring Formats section above.
+
+### ❓ Still Open
+
+| # | Question | Impact |
+|---|---|---|
+| Q1 | Is there a max team cap per tournament? | Affects registration logic and UI |
+| Q2 | Is `registration_deadline` required or optional? | Affects form validation and scheduling flow |
+| Q3 | Are match times scheduled by organizer, or only logged when scores are entered? | Determines whether `scheduled_time` is required or optional |
+| Q5 | Tiebreaker logic — if two teams tie on wins and games, what is the final tiebreaker? | Required for standings and group advancement calculation |
+| Q6 | How many teams advance from each group to the knockout stage? | Determines bracket size and generation logic |

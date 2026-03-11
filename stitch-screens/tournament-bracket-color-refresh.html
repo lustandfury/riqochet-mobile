@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RIQOCHET | Padel Pro Tournament Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0df259",
+                        "secondary": "#00d4ff",
+                        "accent-gold": "#ffd700",
+                        "background-light": "#f5f8f6",
+                        "background-dark": "#102216",
+                        "neutral-green": "#1a3322",
+                        "accent-green": "#316843",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+        .bracket-line {
+            position: relative;
+        }
+        .bracket-line::after {
+            content: '';
+            position: absolute;
+            border-color: #316843;
+            border-style: solid;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen flex flex-col">
+<!-- Top Navigation / Header -->
+<header class="flex items-center justify-between p-4 bg-background-light dark:bg-background-dark border-b border-accent-green/30">
+<div class="flex items-center gap-3">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">trophy</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">RIQOCHET <span class="text-primary text-sm font-medium ml-1">PADEL PRO</span></h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- Prize Pool Section -->
+<section class="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-neutral-green/50 border border-accent-green/30 rounded-xl p-6 flex flex-col justify-between">
+<div>
+<p class="text-slate-400 text-sm font-medium uppercase tracking-wider">Total Calcutta Prize Pool</p>
+<p class="text-4xl font-extrabold mt-1 text-accent-gold">$42,500</p>
+</div>
+<div class="flex items-center gap-2 mt-4">
+<span class="text-primary flex items-center text-sm font-bold">
+<span class="material-symbols-outlined text-sm">trending_up</span> +15%
+                </span>
+<span class="text-slate-500 text-xs">Since Auction Start</span>
+</div>
+</div>
+<div class="bg-background-dark border border-primary/20 rounded-xl p-6 flex flex-col justify-center relative overflow-hidden">
+<div class="absolute top-0 right-0 p-3">
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase animate-pulse">Live</span>
+</div>
+<p class="text-primary text-sm font-bold tracking-widest uppercase mb-1">Calcutta Active</p>
+<p class="text-slate-300 text-sm leading-relaxed mb-4">Bidding for the Final Four is now live. Current pot: $12k.</p>
+<button class="bg-primary text-background-dark font-bold py-2 px-6 rounded-lg text-sm transition hover:bg-primary/90 w-fit">
+                Enter Auction Room
+            </button>
+</div>
+</section>
+<!-- Tournament Navigation -->
+<nav class="px-4">
+<div class="flex border-b border-accent-green/30 gap-8 overflow-x-auto no-scrollbar">
+<a class="flex flex-col items-center py-4 text-slate-400 border-b-2 border-transparent" href="#">
+<span class="text-sm font-bold whitespace-nowrap">Round of 16</span>
+</a>
+<a class="flex flex-col items-center py-4 text-primary border-b-2 border-primary" href="#">
+<span class="text-sm font-bold whitespace-nowrap">Quarter-finals</span>
+</a>
+<a class="flex flex-col items-center py-4 text-slate-400 border-b-2 border-transparent" href="#">
+<span class="text-sm font-bold whitespace-nowrap">Semi-finals</span>
+</a>
+<a class="flex flex-col items-center py-4 text-slate-400 border-b-2 border-transparent" href="#">
+<span class="text-sm font-bold whitespace-nowrap">Finals</span>
+</a>
+</div>
+</nav>
+<!-- Bracket View -->
+<main class="flex-1 overflow-x-auto p-4 flex gap-8 items-center min-w-max no-scrollbar">
+<!-- Quarter Finals -->
+<div class="flex flex-col gap-8 justify-around h-full py-4">
+<!-- Match 1 -->
+<div class="flex flex-col gap-1 w-64">
+<div class="bg-neutral-green border border-accent-green/40 rounded-lg p-3 relative">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] text-slate-500 font-bold uppercase">Seed #1</span>
+<span class="text-[10px] text-secondary font-bold bg-secondary/10 px-1 rounded">Owner: @KingPadel</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-bold text-white">S. Galán / J. Lebrón</span>
+<span class="text-accent-gold font-bold">2</span>
+</div>
+</div>
+<div class="bg-neutral-green border border-accent-green/40 rounded-lg p-3 opacity-60">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] text-slate-500 font-bold uppercase">Seed #8</span>
+<span class="text-[10px] text-slate-400 bg-white/5 px-1 rounded">Owner: @BettorX</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-bold text-white">F. Belasteguín / S. Yanguas</span>
+<span class="text-slate-500 font-bold">0</span>
+</div>
+</div>
+</div>
+<!-- Match 2 -->
+<div class="flex flex-col gap-1 w-64">
+<div class="bg-neutral-green border border-accent-green/40 rounded-lg p-3">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] text-slate-500 font-bold uppercase">Seed #4</span>
+<span class="text-[10px] text-secondary font-bold bg-secondary/10 px-1 rounded">Owner: @KingPadel</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-bold text-white">A. Coello / A. Tapia</span>
+<span class="text-accent-gold font-bold">0</span>
+</div>
+</div>
+<div class="bg-neutral-green border border-accent-green/40 rounded-lg p-3">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] text-slate-500 font-bold uppercase">Seed #5</span>
+<span class="text-[10px] text-secondary font-bold bg-secondary/10 px-1 rounded">Owner: @KingPadel</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-bold text-white">M. Di Nenno / F. Stupaczuk</span>
+<span class="text-accent-gold font-bold">0</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Connection Quarter to Semi -->
+<div class="flex flex-col justify-around h-full py-4 -ml-8">
+<div class="w-8 h-32 border-r-2 border-t-2 border-b-2 border-accent-green/40 rounded-r-xl"></div>
+<div class="w-8 h-32 border-r-2 border-t-2 border-b-2 border-accent-green/40 rounded-r-xl"></div>
+</div>
+<!-- Semi Finals -->
+<div class="flex flex-col gap-24 justify-around h-full py-4">
+<!-- Semi Match 1 -->
+<div class="flex flex-col gap-1 w-64">
+<div class="bg-neutral-green border-2 border-primary/50 rounded-lg p-4 shadow-lg shadow-primary/5">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] text-secondary font-bold bg-secondary/10 px-1 rounded">In Progress</span>
+<span class="text-[10px] text-secondary font-bold bg-secondary/10 px-1 rounded">Owner: @KingPadel</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-bold text-white">S. Galán / J. Lebrón</span>
+<span class="text-background-dark px-2 rounded text-sm font-black bg-accent-gold">6</span>
+</div>
+</div>
+<div class="bg-background-dark border border-accent-green/20 rounded-lg p-4 italic text-slate-500 flex items-center justify-center text-xs">
+                    Winner of Match 2
+                </div>
+</div>
+<!-- Semi Match 2 -->
+<div class="flex flex-col gap-1 w-64 opacity-50">
+<div class="bg-background-dark border border-accent-green/20 rounded-lg p-4 italic text-slate-500 flex items-center justify-center text-xs">
+                    Winner of Match 3
+                </div>
+<div class="bg-background-dark border border-accent-green/20 rounded-lg p-4 italic text-slate-500 flex items-center justify-center text-xs">
+                    Winner of Match 4
+                </div>
+</div>
+</div>
+<!-- Connection Semi to Final -->
+<div class="flex flex-col justify-center h-full py-4 -ml-8">
+<div class="w-8 h-64 border-r-2 border-t-2 border-b-2 border-accent-green/40 rounded-r-xl"></div>
+</div>
+<!-- Finals -->
+<div class="flex flex-col justify-center h-full py-4">
+<div class="w-72 bg-gradient-to-br from-neutral-green to-background-dark border-2 border-primary rounded-xl p-6 relative">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-background-dark px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Grand Final</div>
+<div class="flex flex-col gap-4 py-4">
+<div class="flex justify-between items-center border-b border-accent-green/20 pb-2">
+<span class="text-slate-500 text-xs">Finalist 1</span>
+<span class="text-accent-gold font-bold">TBD</span>
+</div>
+<div class="flex justify-center text-primary">
+<span class="material-symbols-outlined text-4xl">workspace_premium</span>
+</div>
+<div class="flex justify-between items-center border-t border-accent-green/20 pt-2">
+<span class="text-slate-500 text-xs">Finalist 2</span>
+<span class="text-accent-gold font-bold">TBD</span>
+</div>
+</div>
+<div class="mt-2 text-center">
+<p class="text-[10px] text-slate-400 uppercase font-bold tracking-tighter">Current Prize Stake</p>
+<p class="text-2xl font-black text-accent-gold">$18,450</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<div class="mt-auto">
+<div class="flex gap-2 border-t border-accent-green/30 bg-neutral-green px-4 pb-6 pt-3">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined fill-1">account_tree</span>
+<p class="text-xs font-medium">Bracket</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition" href="#">
+<span class="material-symbols-outlined">gavel</span>
+<p class="text-xs font-medium">Auction</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition" href="#">
+<span class="material-symbols-outlined">groups</span>
+<p class="text-xs font-medium">Players</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<p class="text-xs font-medium">Wallet</p>
+</a>
+</div>
+</div>
+</body></html>

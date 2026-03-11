@@ -1,0 +1,344 @@
+# Riqochet — Calcutta Auction
+### Product Requirements Document | February 2026
+
+---
+
+## Overview
+
+This document specifies the product requirements for the Calcutta Auction feature on Riqochet. The Calcutta auction is an optional monetization layer that tournament organizers can enable at event creation. It replaces or complements the flat entry fee model by auctioning each registered team to the highest bidder before play begins. The total auction proceeds form the prize pool. Riqochet retains a platform rake; the remainder is paid to the owners of placing teams.
+
+This document covers Phase 1 (MVP auction mechanics) with Phase 2 and Phase 3 requirements noted for planning purposes.
+
+---
+
+## Problem Statement
+
+The entry fee model generates predictable but capped revenue — once registration closes, the pool is fixed. It also restricts financial participation to competing players only. Organizers at premium and elite events want a format that creates spectator engagement, larger prize pools, and a more social tournament experience. The Calcutta auction addresses all three: it opens bidding to anyone, it lets competitive pressure among bidders grow the pool beyond what fixed fees would produce, and it gives every attendee a financial stake in the outcome.
+
+---
+
+## Goals
+
+- Enable organizers to run a Calcutta auction as an optional alternative to, or in combination with, standard entry fees.
+- Allow any Riqochet user — not just competing players — to participate in an auction and own a team's prize equity.
+- Automate fund collection, rake deduction, escrow, and payout so organizers have no manual money handling.
+- Launch a Phase 1 MVP via a closed pilot with the founder's network before general availability.
+
+## Non-Goals (Phase 1)
+
+- Real-time live bidding with simultaneous competing bids (sequential manual bidding first).
+- Fractional team ownership or partial stakes.
+- Secondary market resale of team stakes during tournament play.
+- Multi-tournament series with accumulated Calcutta pools.
+- International markets outside the United States.
+
+---
+
+## User Roles
+
+| Role | Description |
+|---|---|
+| **Organizer** | Creates the tournament, enables Calcutta, sets reserve prices and prize splits, manages the auction event |
+| **Player** | Registers their team; may bid on themselves before the auction opens to others |
+| **Bidder** | Any Riqochet user who participates in the auction; wins ownership of a team's prize equity |
+| **Owner** | A bidder who has won the auction for a team; receives prize share based on team's finishing position |
+| **Admin** | Riqochet staff; can override auction results, process refunds, and flag disputes |
+
+A single user may hold multiple roles simultaneously (e.g., a player who also bids on other teams).
+
+---
+
+## User Stories
+
+### Organizer
+- As an organizer, I want to enable a Calcutta auction when creating a tournament so I can offer a more engaging prize pool format to my community.
+- As an organizer, I want to set a reserve price for each team so no team sells below a minimum that would embarrass the player or undermine the prize pool.
+- As an organizer, I want to configure the prize split percentages (e.g., 50/25/15/10) so the payout structure reflects my event's format.
+- As an organizer, I want to optionally set a player split percentage so players receive a share of winnings regardless of who owns them.
+- As an organizer, I want to see a real-time summary of auction proceeds so I can communicate the growing prize pool to participants.
+- As an organizer, I want automated payout after the final match so I do not have to handle funds manually.
+
+### Player
+- As a player, I want the opportunity to buy my own team before the auction opens so I retain control over my prize equity.
+- As a player, I want to see who owns my team so I know who to acknowledge if I win.
+- As a player, I want to understand the player split clearly at registration so I know what I stand to earn from a win regardless of ownership.
+
+### Bidder / Owner
+- As a bidder, I want to browse all available teams with their player profiles and ratings before placing a bid so I can make informed decisions.
+- As a bidder, I want to be notified immediately if I am outbid so I can respond before the auction closes for that team.
+- As a bidder, I want my funds pre-authorized rather than immediately charged so I am not charged for teams I don't win.
+- As an owner, I want push notifications for every match result involving my team so I can follow progress through the bracket.
+- As an owner, I want automatic payout to my linked account within 24 hours of tournament completion so I receive winnings without friction.
+
+---
+
+## Feature Requirements
+
+### F1 — Auction Configuration (Organizer, Tournament Creation)
+
+**F1.1** The tournament creation flow includes an optional "Calcutta Auction" toggle. Default: off.
+
+**F1.2** When enabled, the organizer sets:
+- Auction date and time (must be before the tournament start time)
+- Reserve price per team: a minimum bid below which a team cannot be sold (organizer sets globally or per-team; default: $25)
+- Prize split: configurable percentages across finishing positions (must sum to 100%); Riqochet provides defaults
+- Player split: percentage of each prize share automatically allocated to the playing team (default: 0%; configurable from 0% to 50%)
+- Auction mode: **In-App** (bidders participate via the app) or **Manual** (organizer records winning bids in-person; app handles payment collection and escrow)
+
+**F1.3** The organizer can edit auction settings at any time before the auction opens. Once the auction begins, prize split and player split are locked. Reserve prices and auction mode can be changed only by a Riqochet Admin.
+
+**F1.4** If the auction is enabled, Riqochet displays a "Calcutta Active" badge on the tournament listing and bracket view.
+
+---
+
+### F2 — Player Right of First Refusal
+
+**F2.1** When auction is enabled, players who have confirmed registration receive a notification 24 hours before the auction opens offering them the right to buy their own team at the reserve price.
+
+**F2.2** Players have a 12-hour window to accept. If they accept, their payment is processed immediately at the reserve price and they are marked as the owner of their own team. The team does not appear in the public auction.
+
+**F2.3** If the player declines or the window expires, the team enters the public auction at the reserve price as the opening bid.
+
+**F2.4** A player who has purchased their own team is still listed as a bidder and may bid on other teams.
+
+---
+
+### F3 — Auction Flow (In-App Mode)
+
+**F3.1** The auction opens at the configured time. All registered Riqochet users with a verified payment method on file may participate as bidders.
+
+**F3.2** Teams are presented sequentially in a randomized order (seeded teams can optionally be held for last, at organizer discretion). Each team remains open for bidding for a configurable duration (default: 3 minutes).
+
+**F3.3** Bidding mechanics:
+- Minimum increment: $10 or 10% of current bid, whichever is greater.
+- Any bid placed in the final 30 seconds of a team's window extends the window by 30 seconds (anti-sniping).
+- A bidder may not bid on a team they are registered on (conflict of interest prevention; player right of first refusal covers this case separately).
+
+**F3.4** When a team's bidding window closes, the highest bid wins. The winning bidder is immediately notified and their payment method is charged.
+
+**F3.5** If no bid meets the reserve price when the window closes:
+- Option A (default): The organizer is notified; they may lower the reserve or manually assign an owner.
+- Option B (organizer-configured): The team re-enters the queue for a second-round auction at 50% of the original reserve price.
+- If the team remains unsold after two rounds, the organizer takes ownership at the reserve price (effectively seeding the prize pool with organizer funds).
+
+**F3.6** Bidders may place bids on multiple teams simultaneously. Losing bids are released immediately (no hold). Winning bids are charged when the team's window closes.
+
+**F3.7** The auction dashboard displays in real time: current team up for bid, current high bid, time remaining, and a running total of gross auction proceeds.
+
+---
+
+### F4 — Auction Flow (Manual Mode)
+
+**F4.1** In Manual mode, the organizer runs the auction in person (at the venue) and records winning bids in the app after each team is sold.
+
+**F4.2** For each team, the organizer enters the winner's name (must be a Riqochet user or can be registered as a guest with an email address) and the winning bid amount.
+
+**F4.3** Riqochet sends a payment request to the winning bidder via push notification and email. Payment must be completed within 2 hours of auction close.
+
+**F4.4** Teams whose payment is not received within 2 hours are flagged for organizer attention. The organizer can reassign ownership or mark the bid as cash-collected (organizer is then responsible for funds transfer; Riqochet treats it as paid for escrow purposes).
+
+**F4.5** The rake is applied to all recorded bids regardless of collection method.
+
+---
+
+### F5 — Escrow and Rake
+
+**F5.1** All auction proceeds are held in Riqochet's Stripe-managed escrow immediately upon payment collection.
+
+**F5.2** Rake is calculated based on gross pool size at auction close:
+
+| Gross Pool | Rake |
+|---|---|
+| Under $1,500 | 20% |
+| $1,500–$6,000 | 18% |
+| $6,000–$25,000 | 15% |
+| $25,000–$100,000 | 12% |
+| $100,000+ | 10% |
+
+**F5.3** Rake is deducted from gross pool to produce the net prize pool. The net prize pool is held in escrow until tournament completion and distributed according to the configured prize split.
+
+**F5.4** Player split (if configured) is calculated as a percentage of each owner's prize share and transferred to the playing team's linked accounts (split equally between the two team members).
+
+**F5.5** All fund movements (rake, escrow hold, owner payout, player split payout) are logged with timestamps and accessible to Riqochet Admin.
+
+---
+
+### F6 — Bracket Integration
+
+**F6.1** The bracket view displays an "Owner" tag on each team slot showing the auction owner's display name (or "No owner" if the team was purchased by the player themselves and they chose privacy mode).
+
+**F6.2** A live prize pool counter is displayed at the top of the bracket view: "Prize Pool: $X,XXX" — updating in real time during the tournament as match results propagate.
+
+**F6.3** Completed match results trigger a push notification to the affected team's owner: "{Team Name} won their {round} match. They are now in the {next round}."
+
+**F6.4** Owners can tap through to a "My Teams" dashboard that shows all teams they own across active Calcutta tournaments, current bracket position, and projected prize share.
+
+---
+
+### F7 — Payout
+
+**F7.1** Payouts trigger automatically when the bracket is marked complete by the organizer.
+
+**F7.2** Prize shares are calculated by applying the configured split percentages to the net prize pool. If a player split is configured, it is deducted from the owner's share before transfer.
+
+**F7.3** Funds are transferred to owners' Stripe Connect linked accounts within 24 hours of tournament completion.
+
+**F7.4** If a payout fails (e.g., no linked account, account issue), Riqochet holds the funds and sends the owner a notification with instructions to link a payout account within 7 days. After 7 days, the funds are held in Riqochet's reserve pending manual resolution by Admin.
+
+**F7.5** All payouts are logged. For US users, Riqochet tracks cumulative winnings per user. Users who receive $600 or more in a calendar year are flagged for 1099 generation (Phase 3 feature; Phase 1 requires manual tracking by Admin).
+
+---
+
+### F8 — Cancellation and Refunds
+
+**F8.1** If the organizer cancels the tournament before the auction opens: all pre-authorizations are released. No charge occurs.
+
+**F8.2** If the organizer cancels the tournament after the auction closes and before play begins: all winning bids are fully refunded. Riqochet retains no rake.
+
+**F8.3** If the tournament is cancelled mid-play (after at least one round has completed): Riqochet processes a partial payout. Net pool is distributed pro-rata based on the furthest round completed by each team, using a configurable formula (default: remaining teams at cancellation split the pool equally). The organizer must document the cancellation reason in the app before Riqochet releases funds.
+
+**F8.4** Disputed refunds (bidder claims they did not authorize a charge, organizer disputes cancellation classification) are escalated to Riqochet Admin for manual resolution within 3 business days.
+
+---
+
+### F9 — Notifications
+
+| Trigger | Recipient | Channel |
+|---|---|---|
+| Auction opening in 24 hours | All tournament registrants, registered bidders | Push + Email |
+| Player right-of-first-refusal window opening | Registered players | Push + Email |
+| Auction now live | All tournament registrants, watchlisted users | Push |
+| Outbid on a team | Bidder | Push |
+| Won a team at auction | Winning bidder | Push + Email |
+| Match result for owned team | Owner | Push |
+| Team eliminated from bracket | Owner | Push |
+| Payout sent | Owner | Push + Email |
+| Payout failed | Owner | Push + Email |
+| Tournament cancelled / refund issued | All bidders and owners | Push + Email |
+
+---
+
+### F10 — Organizer Dashboard
+
+**F10.1** Organizers have a Calcutta-specific dashboard accessible from the event management screen with:
+- Auction status (pre-auction / live / closed)
+- Teams sold vs. teams remaining
+- Gross proceeds collected to date
+- Estimated rake and net prize pool
+- Owner list: team → owner → bid amount
+- Payout status per owner post-tournament
+
+**F10.2** The organizer can export the auction summary as a CSV (team, owner, bid amount, prize share, payout status).
+
+---
+
+## Edge Cases
+
+| Scenario | Handling |
+|---|---|
+| Two bids placed simultaneously at identical amounts | First bid received by server wins; second bidder is notified of outbid immediately |
+| Bidder's payment method fails at charge | Riqochet retries once after 10 minutes; if still failing, the team is re-auctioned to the next highest bidder |
+| Team withdraws after auction closes | Organizer marks team as withdrawn; owner receives a full refund of their winning bid. Remaining pool re-distributed among remaining prize positions |
+| Player disputes ownership assignment | Admin reviews auction log; bid records are authoritative |
+| Organizer sets reserve price at $0 | Not permitted; minimum reserve is $10 |
+| Prize split does not sum to 100% | Tournament creation blocked until split is corrected |
+| Auction opens with fewer than 4 teams registered | Warning displayed; organizer must confirm to proceed |
+| Owner is disqualified from an event | Admin marks team as disqualified; owner receives a refund proportional to rounds not played |
+
+---
+
+## Non-Functional Requirements
+
+**Performance**: The auction dashboard must update bid totals and timers within 500ms of a bid being placed. The system must support at least 100 concurrent bidders per auction without degradation.
+
+**Reliability**: Auction state (current bids, timer, winning bids) must be persisted to a durable store. No bid data may be lost on system restart or crash.
+
+**Security**: All payment operations are handled by Stripe. Riqochet stores no raw card data. Auction results are logged to an append-only audit trail.
+
+**Compliance**: The feature must support geography-based feature flags to disable real-money auctions in jurisdictions where enabled only after legal review.
+
+**Accessibility**: Auction UI must meet WCAG 2.1 AA standards. Auction countdown timers must be announced to screen readers.
+
+---
+
+## Success Metrics
+
+| Metric | Phase 1 Target |
+|---|---|
+| Calcutta events run | ≥ 5 in pilot cohort |
+| Avg bidders per auction | ≥ 20 |
+| Avg auction pool / entry fee pool ratio | ≥ 1.2x (Calcutta generates at least 20% more gross pool than equivalent entry fee event) |
+| Payout success rate | ≥ 98% (no manual intervention required) |
+| Owner re-engagement | ≥ 60% of owners who won a team bid in a subsequent Calcutta within 60 days |
+| Organizer repeat rate | ≥ 70% of pilot organizers run a second Calcutta event |
+| Disputes requiring Admin intervention | < 2% of auctions |
+
+---
+
+## Dependencies
+
+| Dependency | Owner | Required For |
+|---|---|---|
+| Stripe Connect (organizer payout accounts) | Platform / Infra | Automated payouts (F7) |
+| Stripe payment intents with capture delay | Platform / Infra | Pre-authorization hold on bids (F3.6) |
+| Push notification infrastructure | Platform / Infra | Bidder notifications (F9) |
+| Real-time data layer (WebSocket or similar) | Platform / Infra | Live auction dashboard (F3.7) |
+| Gaming attorney legal review | Legal | Go-live approval |
+| Bracket completion hook | Tournament product | Payout trigger (F7.1) |
+
+---
+
+## Open Questions
+
+1. **Player split default**: Should the default player split be 0% (owner keeps all) or a non-zero amount (e.g., 20% to the playing team)? A non-zero default may increase player willingness to participate and drive better fields, but it reduces the financial upside for bidders. Recommendation: start at 0%, make it a configurable organizer option, observe adoption data before setting a new default.
+
+2. **Guest bidders**: Should non-Riqochet users be able to bid at in-person (Manual mode) auctions, registered only with an email address? This increases bidder pool at launch but introduces KYC and payout complexity. Recommendation: Phase 1 restrict to registered Riqochet users only.
+
+3. **Bid visibility**: Should all bids be visible publicly during the auction (creates social excitement) or only the current high bid (reduces anchor bias)? Recommendation: show current high bid and bidder count only; full bid history visible to organizer and Admin.
+
+4. **Reserve price enforcement**: If a top-seeded team fails to meet reserve, should Riqochet auto-lower the reserve and re-auction, or require organizer action? An automated fallback reduces organizer burden but may create pricing anomalies. Decision needed before Phase 1 implementation.
+
+5. **Tax handling**: At what threshold does Riqochet flag winnings for 1099 review in Phase 1 before the automated system is built in Phase 3? Recommendation: Admin manually reviews any single payout over $500 in Year 1.
+
+---
+
+## Implementation Phases
+
+### Phase 1 — MVP (Pilot)
+- Auction configuration in tournament creation (F1)
+- Player right of first refusal (F2)
+- Manual auction mode (F4) — primary mode for pilot events
+- Stripe-based escrow, rake calculation, and automated payout (F5, F7)
+- Basic bracket integration: owner display (F6.1)
+- Core notifications: won team, match result, payout sent (F9)
+- Cancellation and refund logic (F8)
+- Organizer dashboard: owner list, payout status (F10)
+
+### Phase 2 — Live Auction
+- In-App sequential auction with real-time bidding (F3)
+- Anti-sniping timer extension (F3.3)
+- Live prize pool counter in bracket view (F6.2)
+- Owner "My Teams" dashboard (F6.4)
+- Full notification suite (F9)
+- Full organizer dashboard and CSV export (F10)
+
+### Phase 3 — Advanced
+- Secondary market resale (owner-to-owner stake sales)
+- Fractional team ownership
+- Automated 1099 generation for US winners
+- Multi-tournament series Calcutta pools
+
+---
+
+## Approvals Required Before Launch
+
+| Gate | Approver |
+|---|---|
+| Legal review of auction format and bidder equity structure | External gaming attorney |
+| Stripe ToS review for auction mechanics | Stripe account manager or legal |
+| Feature flag and geography restriction implementation | Platform Engineering |
+| Pilot organizer onboarding and terms of service | Founder / Legal |
+
+---
+
+*Prepared by: Mike | February 2026*
