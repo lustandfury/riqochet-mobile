@@ -332,9 +332,9 @@ export default function CreateTournament() {
         </AnimatePresence>
       </div>
 
-      {/* Bottom CTA */}
+      {/* Bottom CTA — sits above the BottomNav */}
       <div
-        className="absolute bottom-0 left-0 right-0 px-5 pb-8 pt-4"
+        className="absolute bottom-20 left-0 right-0 px-5 pb-2 pt-4"
         style={{ background: 'linear-gradient(to top, #08090E 70%, transparent)' }}
       >
         <motion.button

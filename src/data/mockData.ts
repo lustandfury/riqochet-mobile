@@ -2,7 +2,7 @@ import { Player, Tournament, AuctionTeam, BracketMatch, Market } from '../types'
 
 export const ME: Player = {
   id: 'me',
-  name: 'Alex Rivera',
+  name: 'Adam Rivera',
   flag: '🇺🇸',
   rating: 3.7,
   level: 'Amateur',
@@ -251,14 +251,12 @@ export const AUCTION_TEAMS: AuctionTeam[] = [
     tournamentName: 'Riqochet Miami Open',
     currentBid: 1600,
     startingBid: 500,
-    initialTimeLeft: 0,
-    status: 'closed',
-    winnerId: 'u9',
-    winnerName: 'bella_investor',
+    initialTimeLeft: 10800,
+    status: 'upcoming',
     bids: [
       { id: 'b20', userId: 'u9', username: 'bella_investor', amount: 1600, timestamp: Date.now() - 86400000 },
     ],
-    watchers: 0,
+    watchers: 6,
   },
   {
     id: 'at4',
@@ -288,60 +286,75 @@ export const AUCTION_TEAMS: AuctionTeam[] = [
   },
 ];
 
-export const BRACKET: BracketMatch[] = [
-  {
-    id: 'qf1',
-    round: 'QF',
-    slot1: { name: 'Ruiz / Santos', seed: 1, isWinner: true },
-    slot2: { name: 'Costa / Wilson', seed: 8 },
-    score: '6-3, 6-4',
-    status: 'completed',
-  },
-  {
-    id: 'qf2',
-    round: 'QF',
-    slot1: { name: 'Vargas / Costa', seed: 2, isWinner: true },
-    slot2: { name: 'Rivera / Park', seed: 7, isMe: true },
-    score: '6-1, 6-2',
-    status: 'completed',
-  },
-  {
-    id: 'qf3',
-    round: 'QF',
-    slot1: { name: 'Bellini / Thompson', seed: 3 },
-    slot2: { name: 'González / Kim', seed: 6 },
-    score: '4-2',
-    status: 'live',
-  },
-  {
-    id: 'qf4',
-    round: 'QF',
-    slot1: { name: 'Chen / Martínez', seed: 4 },
-    slot2: { name: 'Santos / García', seed: 5 },
-    status: 'upcoming',
-  },
-  {
-    id: 'sf1',
-    round: 'SF',
-    slot1: { name: 'Ruiz / Santos', seed: 1 },
-    slot2: { name: 'TBD', seed: undefined },
-    status: 'upcoming',
-  },
-  {
-    id: 'sf2',
-    round: 'SF',
-    slot1: { name: 'TBD', seed: undefined },
-    slot2: { name: 'TBD', seed: undefined },
-    status: 'upcoming',
-  },
-  {
-    id: 'f1',
-    round: 'F',
-    slot1: { name: 'TBD', seed: undefined },
-    slot2: { name: 'TBD', seed: undefined },
-    status: 'upcoming',
-  },
-];
+// Brackets keyed by tournament id
+export const BRACKETS: Record<string, BracketMatch[]> = {
+  // Riqochet Miami Open — auction closed, all matches upcoming (predict mode)
+  t1: [
+    // Group A: seeds 1, 4, 5, 8
+    { id: 'mo-rr-a1', round: 'RR', group: 'A', slot1: { name: 'Ruiz / Rodriguez',  seed: 1 }, slot2: { name: 'Martínez / Park',   seed: 8 }, status: 'upcoming' },
+    { id: 'mo-rr-a2', round: 'RR', group: 'A', slot1: { name: 'Ruiz / Rodriguez',  seed: 1 }, slot2: { name: 'Costa / Kim',        seed: 5 }, status: 'upcoming' },
+    { id: 'mo-rr-a3', round: 'RR', group: 'A', slot1: { name: 'Ruiz / Rodriguez',  seed: 1 }, slot2: { name: 'Chen / Williams',    seed: 4 }, status: 'upcoming' },
+    { id: 'mo-rr-a4', round: 'RR', group: 'A', slot1: { name: 'Chen / Williams',   seed: 4 }, slot2: { name: 'Costa / Kim',        seed: 5 }, status: 'upcoming' },
+    { id: 'mo-rr-a5', round: 'RR', group: 'A', slot1: { name: 'Chen / Williams',   seed: 4 }, slot2: { name: 'Martínez / Park',   seed: 8 }, status: 'upcoming' },
+    { id: 'mo-rr-a6', round: 'RR', group: 'A', slot1: { name: 'Costa / Kim',       seed: 5 }, slot2: { name: 'Martínez / Park',   seed: 8 }, status: 'upcoming' },
+    // Group B: seeds 2, 3, 6, 7
+    { id: 'mo-rr-b1', round: 'RR', group: 'B', slot1: { name: 'Vargas / Pham',     seed: 2 }, slot2: { name: 'Bellini / Santos',  seed: 3 }, status: 'upcoming' },
+    { id: 'mo-rr-b2', round: 'RR', group: 'B', slot1: { name: 'Vargas / Pham',     seed: 2 }, slot2: { name: 'González / Davis',  seed: 6 }, status: 'upcoming' },
+    { id: 'mo-rr-b3', round: 'RR', group: 'B', slot1: { name: 'Vargas / Pham',     seed: 2 }, slot2: { name: 'Thompson / Rivera', seed: 7, isMe: true }, status: 'upcoming' },
+    { id: 'mo-rr-b4', round: 'RR', group: 'B', slot1: { name: 'Bellini / Santos',  seed: 3 }, slot2: { name: 'González / Davis',  seed: 6 }, status: 'upcoming' },
+    { id: 'mo-rr-b5', round: 'RR', group: 'B', slot1: { name: 'Bellini / Santos',  seed: 3 }, slot2: { name: 'Thompson / Rivera', seed: 7, isMe: true }, status: 'upcoming' },
+    { id: 'mo-rr-b6', round: 'RR', group: 'B', slot1: { name: 'González / Davis',  seed: 6 }, slot2: { name: 'Thompson / Rivera', seed: 7, isMe: true }, status: 'upcoming' },
+    // Knockout
+    { id: 'mo-sf1', round: 'SF', slot1: { name: 'TBD' }, slot2: { name: 'TBD' }, status: 'upcoming' },
+    { id: 'mo-sf2', round: 'SF', slot1: { name: 'TBD' }, slot2: { name: 'TBD' }, status: 'upcoming' },
+    { id: 'mo-f1',  round: 'F',  slot1: { name: 'TBD' }, slot2: { name: 'TBD' }, status: 'upcoming' },
+  ],
+  // South Beach Pro-Am — live, group stage in progress
+  t2: [
+    // Group A: seeds 1, 4, 5, 8
+    { id: 'rr-a1', round: 'RR', group: 'A', slot1: { name: 'Ruiz / Santos',      seed: 1, isWinner: true }, slot2: { name: 'Costa / Wilson',   seed: 8 },             score: '6-3, 6-2', status: 'completed' },
+    { id: 'rr-a2', round: 'RR', group: 'A', slot1: { name: 'Ruiz / Santos',      seed: 1, isWinner: true }, slot2: { name: 'Santos / García',  seed: 5 },             score: '6-2, 6-1', status: 'completed' },
+    { id: 'rr-a3', round: 'RR', group: 'A', slot1: { name: 'Ruiz / Santos',      seed: 1 },                  slot2: { name: 'Chen / Martínez', seed: 4 },             score: '5-3',       status: 'live'      },
+    { id: 'rr-a4', round: 'RR', group: 'A', slot1: { name: 'Chen / Martínez',   seed: 4, isWinner: true }, slot2: { name: 'Santos / García',  seed: 5 },             score: '6-4, 6-3', status: 'completed' },
+    { id: 'rr-a5', round: 'RR', group: 'A', slot1: { name: 'Chen / Martínez',   seed: 4, isWinner: true }, slot2: { name: 'Costa / Wilson',   seed: 8 },             score: '7-5, 6-4', status: 'completed' },
+    { id: 'rr-a6', round: 'RR', group: 'A', slot1: { name: 'Santos / García',   seed: 5 },                  slot2: { name: 'Costa / Wilson',   seed: 8 },                               status: 'upcoming'  },
+    // Group B: seeds 2, 3, 6, 7
+    { id: 'rr-b1', round: 'RR', group: 'B', slot1: { name: 'Vargas / Costa',    seed: 2, isWinner: true }, slot2: { name: 'Rivera / Park',    seed: 7, isMe: true }, score: '6-2, 6-4', status: 'completed' },
+    { id: 'rr-b2', round: 'RR', group: 'B', slot1: { name: 'Vargas / Costa',    seed: 2, isWinner: true }, slot2: { name: 'González / Kim',  seed: 6 },             score: '6-3, 6-1', status: 'completed' },
+    { id: 'rr-b3', round: 'RR', group: 'B', slot1: { name: 'Vargas / Costa',    seed: 2 },                  slot2: { name: 'Bellini / Thompson', seed: 3 },                              status: 'upcoming'  },
+    { id: 'rr-b4', round: 'RR', group: 'B', slot1: { name: 'Bellini / Thompson',seed: 3, isWinner: true }, slot2: { name: 'González / Kim',  seed: 6 },             score: '6-4, 7-5', status: 'completed' },
+    { id: 'rr-b5', round: 'RR', group: 'B', slot1: { name: 'Bellini / Thompson',seed: 3, isWinner: true }, slot2: { name: 'Rivera / Park',    seed: 7, isMe: true }, score: '6-3, 6-2', status: 'completed' },
+    { id: 'rr-b6', round: 'RR', group: 'B', slot1: { name: 'González / Kim',   seed: 6 },                  slot2: { name: 'Rivera / Park',    seed: 7, isMe: true },                    status: 'upcoming'  },
+    // Knockout — TBD pending group stage
+    { id: 'sf1', round: 'SF', slot1: { name: 'TBD' }, slot2: { name: 'TBD' }, status: 'upcoming' },
+    { id: 'sf2', round: 'SF', slot1: { name: 'TBD' }, slot2: { name: 'TBD' }, status: 'upcoming' },
+    { id: 'f1',  round: 'F',  slot1: { name: 'TBD' }, slot2: { name: 'TBD' }, status: 'upcoming' },
+  ],
+  // Coconut Grove Invitational — fully completed
+  t4: [
+    // Group A: seeds 1, 4, 5, 8
+    { id: 'cg-rr-a1', round: 'RR', group: 'A', slot1: { name: 'Ruiz / Santos',     seed: 1, isWinner: true }, slot2: { name: 'Bellini / Kim',    seed: 8 },             score: '6-2, 6-1',      status: 'completed' },
+    { id: 'cg-rr-a2', round: 'RR', group: 'A', slot1: { name: 'Ruiz / Santos',     seed: 1, isWinner: true }, slot2: { name: 'Santos / Lee',     seed: 5 },             score: '7-5, 6-4',      status: 'completed' },
+    { id: 'cg-rr-a3', round: 'RR', group: 'A', slot1: { name: 'Ruiz / Santos',     seed: 1, isWinner: true }, slot2: { name: 'Martínez / Wilson', seed: 4 },             score: '6-3, 6-1',      status: 'completed' },
+    { id: 'cg-rr-a4', round: 'RR', group: 'A', slot1: { name: 'Martínez / Wilson', seed: 4 },                  slot2: { name: 'Santos / Lee',     seed: 5, isWinner: true }, score: '4-6, 6-3, 6-2', status: 'completed' },
+    { id: 'cg-rr-a5', round: 'RR', group: 'A', slot1: { name: 'Martínez / Wilson', seed: 4, isWinner: true }, slot2: { name: 'Bellini / Kim',    seed: 8 },             score: '6-3, 6-4',      status: 'completed' },
+    { id: 'cg-rr-a6', round: 'RR', group: 'A', slot1: { name: 'Santos / Lee',      seed: 5, isWinner: true }, slot2: { name: 'Bellini / Kim',    seed: 8 },             score: '6-1, 6-3',      status: 'completed' },
+    // Group B: seeds 2, 3, 6, 7
+    { id: 'cg-rr-b1', round: 'RR', group: 'B', slot1: { name: 'Vargas / Rivera',   seed: 2, isWinner: true }, slot2: { name: 'Chen / García',    seed: 7, isMe: true }, score: '6-2, 6-4',      status: 'completed' },
+    { id: 'cg-rr-b2', round: 'RR', group: 'B', slot1: { name: 'Vargas / Rivera',   seed: 2, isWinner: true }, slot2: { name: 'Thompson / Park',  seed: 6 },             score: '6-1, 6-3',      status: 'completed' },
+    { id: 'cg-rr-b3', round: 'RR', group: 'B', slot1: { name: 'Vargas / Rivera',   seed: 2, isWinner: true }, slot2: { name: 'González / Costa', seed: 3 },             score: '6-4, 7-5',      status: 'completed' },
+    { id: 'cg-rr-b4', round: 'RR', group: 'B', slot1: { name: 'González / Costa',  seed: 3, isWinner: true }, slot2: { name: 'Thompson / Park',  seed: 6 },             score: '6-3, 6-2',      status: 'completed' },
+    { id: 'cg-rr-b5', round: 'RR', group: 'B', slot1: { name: 'González / Costa',  seed: 3, isWinner: true }, slot2: { name: 'Chen / García',    seed: 7, isMe: true }, score: '6-4, 6-3',      status: 'completed' },
+    { id: 'cg-rr-b6', round: 'RR', group: 'B', slot1: { name: 'Thompson / Park',   seed: 6, isWinner: true }, slot2: { name: 'Chen / García',    seed: 7, isMe: true }, score: '6-2, 7-5',      status: 'completed' },
+    // Knockout
+    { id: 'cg-sf1', round: 'SF', slot1: { name: 'Ruiz / Santos',    seed: 1, isWinner: true }, slot2: { name: 'Vargas / Rivera',  seed: 2 },             score: '7-5, 6-4',      status: 'completed' },
+    { id: 'cg-sf2', round: 'SF', slot1: { name: 'González / Costa', seed: 3 },                  slot2: { name: 'Santos / Lee',    seed: 5, isWinner: true }, score: '3-6, 6-2, 6-3', status: 'completed' },
+    { id: 'cg-f1',  round: 'F',  slot1: { name: 'Ruiz / Santos',    seed: 1, isWinner: true }, slot2: { name: 'Santos / Lee',    seed: 5 },             score: '6-3, 6-4',      status: 'completed' },
+  ],
+};
+
+// Legacy export — points to the live tournament bracket
+export const BRACKET: BracketMatch[] = BRACKETS['t2'];
 
 export const MARKETS: Market[] = [
   {

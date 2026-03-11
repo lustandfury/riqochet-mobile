@@ -83,7 +83,8 @@ export interface BracketSlot {
 
 export interface BracketMatch {
   id: string;
-  round: 'QF' | 'SF' | 'F';
+  round: 'RR' | 'SF' | 'F';
+  group?: 'A' | 'B';
   slot1: BracketSlot;
   slot2: BracketSlot;
   score?: string;
@@ -104,6 +105,22 @@ export interface Market {
   change24h: number;  // percentage point change in yes price
   icon: string;       // emoji
   isNew?: boolean;
+}
+
+export interface CalcuttaTeam {
+  id: string;
+  proFlag: string;
+  label: string;
+  partnerIsMe: boolean;
+  currentBid: number;
+  topBidderName: string;
+  topBidderIsMe: boolean;
+  bidsCount: number;
+}
+
+export interface WinNotification {
+  type: 'pro' | 'calcutta';
+  label: string;
 }
 
 export interface CreateTournamentForm {

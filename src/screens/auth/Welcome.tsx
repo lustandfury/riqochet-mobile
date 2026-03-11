@@ -20,9 +20,9 @@ export default function Welcome() {
         i++;
         setTyped(HEADLINE.slice(0, i));
         if (i >= HEADLINE.length) clearInterval(id);
-      }, 52);
+      }, 18);
       return () => clearInterval(id);
-    }, 400);
+    }, 200);
     return () => clearTimeout(delay);
   }, []);
 
@@ -98,7 +98,7 @@ export default function Welcome() {
             {typed.length < HEADLINE.length && (
               <motion.span
                 animate={{ opacity: [1, 0] }}
-                transition={{ repeat: Infinity, duration: 0.5 }}
+                transition={{ repeat: Infinity, duration: 0.25 }}
                 className="inline-block w-[3px] h-[44px] bg-white ml-1 align-middle"
               />
             )}

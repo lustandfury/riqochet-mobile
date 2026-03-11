@@ -1,4 +1,4 @@
-import { Home, Trophy, Gavel, BarChart2 } from 'lucide-react';
+import { Home, Trophy, BarChart2, User } from 'lucide-react';
 import { useApp } from '../store/AppContext';
 import { Screen } from '../types';
 
@@ -7,16 +7,11 @@ const TABS: { label: string; icon: typeof Home; screens: Screen[]; target: Scree
   {
     label: 'Tournaments',
     icon: Trophy,
-    screens: ['tournaments', 'tournament-detail', 'create', 'lobby', 'bracket'],
+    screens: ['tournaments', 'tournament-detail', 'create', 'lobby', 'bracket', 'auction-room', 'auction-portfolio'],
     target: 'tournaments',
   },
-  {
-    label: 'Auction',
-    icon: Gavel,
-    screens: ['auction-hub', 'auction-room', 'auction-portfolio'],
-    target: 'auction-hub',
-  },
   { label: 'Markets', icon: BarChart2, screens: ['markets'], target: 'markets' },
+  { label: 'Profile', icon: User, screens: ['profile'], target: 'profile' },
 ];
 
 export default function BottomNav() {

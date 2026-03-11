@@ -310,9 +310,9 @@ export default function AuctionRoom() {
         </div>
       )}
 
-      {/* Bid feed */}
+      {/* Bid feed — mb-20 clears the BottomNav */}
       <div
-        className="flex-1 overflow-hidden mx-5 rounded-xl"
+        className="flex-1 overflow-hidden mx-5 mb-20 rounded-xl"
         style={{ background: '#111116', border: '1px solid rgba(255,255,255,0.06)' }}
       >
         <div
