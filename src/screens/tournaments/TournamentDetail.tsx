@@ -535,6 +535,12 @@ export default function TournamentDetail() {
     }
   }, [phase, calcuttaTime]);
 
+  useEffect(() => {
+    if (phase === 'calcutta') {
+      setCalcuttaOpen(true);
+    }
+  }, [phase]);
+
   // Bracket swipe state
   const tBracket = BRACKETS[t.id] ?? BRACKET;
   const liveRoundIndex = (() => {
