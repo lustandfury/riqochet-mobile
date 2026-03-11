@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MapPin, Calendar, Users, Trophy, Share2, Gavel, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../store/AppContext';
@@ -521,6 +521,20 @@ export default function TournamentDetail() {
   const [predictionMatch, setPredictionMatch] = useState<BracketMatch | null>(null);
   const [predictionSide, setPredictionSide] = useState<1 | 2>(1);
 
+  useEffect(() => {
+    if (phase !== 'pro' || proTime === 0) {
+      setProOpen(false);
+      setSheetAuction(null);
+    }
+  }, [phase, proTime]);
+
+  useEffect(() => {
+    if (phase === 'done' || calcuttaTime === 0) {
+      setCalcuttaOpen(false);
+      setSheetCalcuttaTeam(null);
+    }
+  }, [phase, calcuttaTime]);
+
   // Bracket swipe state
   const tBracket = BRACKETS[t.id] ?? BRACKET;
   const liveRoundIndex = (() => {
@@ -625,7 +639,7 @@ export default function TournamentDetail() {
               initial={predictMode ? { opacity: 0, y: 12 } : false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="rounded-xl overflow-hidden"
+              className="rounded-xl overflow-hidden order-last"
               style={{ border: `1px solid ${borderColor}` }}
             >
               {/* Header */}
