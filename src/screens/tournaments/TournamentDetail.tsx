@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MapPin, Calendar, Users, Trophy, Share2, Gavel, X, ChevronDown } from 'lucide-react';
+import { MapPin, Calendar, Users, Trophy, Share2, Gavel, X, ChevronDown, RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../../store/AppContext';
 import Header from '../../components/Header';
@@ -508,7 +508,7 @@ function CalcuttaBidSheet({ team, onBid, onClose }: { team: CalcuttaTeam; onBid:
 // ── Main screen ──────────────────────────────────────────────────────────────
 
 export default function TournamentDetail() {
-  const { selectedTournament: t, navigate, proAuctions, proTime, phase, calcuttaTime, calcuttaTeams, placeBid, placeCalcuttaBid } = useApp();
+  const { selectedTournament: t, navigate, proAuctions, proTime, phase, calcuttaTime, calcuttaTeams, placeBid, placeCalcuttaBid, resetAuction } = useApp();
 
   // Local sheet state only
   const [sheetAuction, setSheetAuction] = useState<AuctionTeam | null>(null);
@@ -566,7 +566,16 @@ export default function TournamentDetail() {
   return (
     <div className="relative flex flex-col h-full">
       <div className="flex flex-col h-full bg-app overflow-y-auto pb-28">
-        <Header />
+        <Header right={t.id === 't1' ? (
+          <button
+            onClick={resetAuction}
+            className="flex items-center justify-center w-9 h-9 rounded-full"
+            style={{ background: 'rgba(255,255,255,0.06)' }}
+            title="Reset auction flow"
+          >
+            <RotateCcw size={15} color="#6B6B80" />
+          </button>
+        ) : undefined} />
 
         {/* Hero */}
         <div className="px-5 pb-5">

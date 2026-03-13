@@ -21,6 +21,7 @@ interface AppContextValue {
   placeBid: (auctionId: string, amount: number) => void;
   placeCalcuttaBid: (teamId: string, amount: number) => void;
   dismissWinNotification: () => void;
+  resetAuction: () => void;
 }
 
 const AppContext = createContext<AppContextValue>(null!);
@@ -102,6 +103,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setPhase('done');
   }, [calcuttaTime, phase]);
 
+  const resetAuction = () => {
+    setProAuctions(TOURNAMENT_AUCTIONS);
+    setProTime(INITIAL_PRO_TIME);
+    setPhase('pro');
+    setCalcuttaTime(0);
+    setCalcuttaTeams([]);
+    setWinNotification(null);
+  };
+
   const placeBid = (auctionId: string, amount: number) => {
     setProAuctions(prev => prev.map(a => {
       if (a.id !== auctionId) return a;
@@ -141,6 +151,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       proAuctions, proTime, phase, calcuttaTime, calcuttaTeams, winNotification,
       placeBid, placeCalcuttaBid,
       dismissWinNotification: () => setWinNotification(null),
+      resetAuction,
     }}>
       {children}
     </AppContext.Provider>
