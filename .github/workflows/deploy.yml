@@ -23,11 +23,12 @@ jobs:
         run: npm run build
 
       - name: Deploy to Netlify
-        uses: nwtgck/actions/netlify-deploy@v2
+        uses: nwtgck/actions-netlify@v3.0
         with:
-          netlify-site-id: ${{ secrets.NETLIFY_SITE_ID }}
-          netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          publish-dir: ./dist
           production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "🚀 Auto-deploy from GitHub Actions"
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
