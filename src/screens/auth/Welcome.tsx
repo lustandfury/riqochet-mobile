@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { lazy, Suspense, useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { useApp } from '../../store/AppContext';
-import RingsBackground from '../../components/RingsBackground';
+
+const RingsBackground = lazy(() => import('../../components/RingsBackground'));
 
 const HEADLINE = 'Where every point matters.';
 
@@ -57,7 +58,18 @@ export default function Welcome() {
     <div className="flex flex-col h-full bg-black">
       <div className="relative flex-1">
 
-        <RingsBackground />
+        <Suspense
+          fallback={
+            <div
+              className="absolute inset-0"
+              style={{
+                background: 'radial-gradient(120% 80% at 50% 20%, rgba(96,96,120,0.35) 0%, rgba(32,32,40,0.6) 45%, #000 100%)',
+              }}
+            />
+          }
+        >
+          <RingsBackground />
+        </Suspense>
 
         {/* Player image */}
         <img

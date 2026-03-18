@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AppProvider, useApp } from './store/AppContext';
 import BottomNav from './components/BottomNav';
+import ErrorBoundary from './components/ErrorBoundary';
 import { Trophy } from 'lucide-react';
 import { Screen, NavDirection } from './types';
 
@@ -229,9 +230,11 @@ function AppContent() {
 export default function App() {
   return (
     <AppProvider>
-      <div className="relative w-full bg-app overflow-hidden" style={{ flex: 1 }}>
-        <AppContent />
-      </div>
+      <ErrorBoundary>
+        <div className="relative w-full bg-app overflow-hidden" style={{ flex: 1 }}>
+          <AppContent />
+        </div>
+      </ErrorBoundary>
     </AppProvider>
   );
 }
