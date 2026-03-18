@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { useApp } from '../../store/AppContext';
-import RingsBackground from '../../components/RingsBackground';
 
 const HEADLINE = 'Where every point matters.';
 
@@ -56,8 +55,6 @@ export default function Welcome() {
   return (
     <div className="flex flex-col h-full bg-black">
       <div className="relative flex-1">
-
-        <RingsBackground />
 
         {/* Player image */}
         <img
