@@ -28,6 +28,7 @@ const AppContext = createContext<AppContextValue>(null!);
 
 const TOURNAMENT_AUCTIONS = AUCTION_TEAMS.filter(a => a.tournamentId === 't1');
 const INITIAL_PRO_TIME = Math.min(...TOURNAMENT_AUCTIONS.map(a => a.initialTimeLeft));
+const CALCUTTA_AUCTION_DURATION_SECONDS = 10;
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [history, setHistory] = useState<Screen[]>(['welcome']);
@@ -82,7 +83,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       };
     });
     setCalcuttaTeams(teams);
-    setCalcuttaTime(INITIAL_PRO_TIME);
+    setCalcuttaTime(CALCUTTA_AUCTION_DURATION_SECONDS);
     setPhase('calcutta');
   }, [proTime, phase]);
 
